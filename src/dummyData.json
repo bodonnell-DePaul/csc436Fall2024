@@ -1,16 +1,19 @@
 [
     {
         "title": "My Title",
+        "id": 1,
         "content": "My Content",
         "rating": 5
     },
     {
         "title": "Accordion Item #1",
+        "id": 2,
         "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
         "rating": 4.5
       },
       {
         "title": "Accordion Item #2",
+        "id": 3,
         "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
         "rating": 3.8
       }

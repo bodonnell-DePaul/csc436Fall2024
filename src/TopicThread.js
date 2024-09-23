@@ -1,13 +1,29 @@
 
+import Accordion from 'react-bootstrap/Accordion';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import React, { useEffect, useState } from 'react';
 
-function TopicThread(){
+function TopicThread({ comments }) {
+    const [topicComments, setTopicComments] = useState([]);
 
-    return(
+    const fetchComments = comments.map((comment,index) => {
+        return (
+            <div key={index}>
+            <p>{comment.title}</p>
+            {comment.comments && comment.comments.map((reply, replyIndex) => (
+              <p key={replyIndex} style={{ marginLeft: '20px' }}>{reply}</p>
+            ))}
+          </div>
+        );
+    });
+
+    return (
         <div>
-            <p>THIS IS MY TOPIC THREAD SAMPLE</p>
+            {fetchComments}
         </div>
     );
+}
 
-};
 
 export default TopicThread;

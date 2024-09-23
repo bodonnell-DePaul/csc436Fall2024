@@ -4,6 +4,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import TopicThread from './TopicThread';
 import React, { useEffect, useState } from 'react';
 import topicsData from './dummyData.json';
+import comments from './topicThread.json';
 import './TopicList.css';
 
 
@@ -23,6 +24,7 @@ function TopicList() {
           <Accordion.Header>{topic.title}</Accordion.Header>
           <Accordion.Body>
           {topic.content}
+          <TopicThread comments={comments.filter(comment => comment.title_id === topic.id)} />
             <div className="accordion-footer">
               <strong>Rating:</strong> {topic.rating}
               <ButtonGroup className="ml-2">
