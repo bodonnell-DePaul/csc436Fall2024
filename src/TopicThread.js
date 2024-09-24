@@ -1,10 +1,20 @@
 
 
-function TopicThread(){
+function TopicThread({comments}){
+
+    const matchedComments = comments.map((chat, index) => {
+        return(
+            <div>
+                <strong>{chat.title}</strong>
+                <p>{chat.content}</p>
+            </div>
+        );
+    });
+
 
     return(
         <div>
-            <p>THIS IS MY TOPIC THREAD SAMPLE</p>
+            {matchedComments}
         </div>
     );
 
