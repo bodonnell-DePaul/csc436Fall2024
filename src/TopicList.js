@@ -17,15 +17,13 @@ function TopicList() {
 //         "title": "My Awesome First Title",
 //         "content": "Even Better Content!!!",
 //         "rating": 4
-  function saveTopic(e, data) {
+  function saveTopic(e) {
+    e.preventDefault();
     console.log(e)
-    topics.concat({
-      "id":commentData.length + 1,
-      "title":e.title,
-      "content":e.content,
-      "rating":0
-    });
-    console.log(topics);
+    console.log(e.target.formTitle.value)
+    console.log(e.target.formContent.value);
+    const newTopic = 'hooray'
+    //setTopics(topics => ({...topics, newTopic}));
 
   }
 
@@ -33,22 +31,23 @@ function TopicList() {
   const [topics, setTopics ] = useState(topicData)
 
   useEffect(() => {
+    console.log(topics)
     setComments(comments)
     setTopics(topics);
   });
 
   return (
     <div>
-    <Form>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+    <Form onSubmit={saveTopic}>
+      <Form.Group className="mb-3" controlId="formTitle">
         <Form.Label>Topic Subject</Form.Label>
-        <Form.Control type="text" placeholder="Topic Content" />
+        <Form.Control type="text" name="formTitle"  placeholder="Topic Content" />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+      <Form.Group className="mb-3" controlId="formContent">
         <Form.Label>Topic Content</Form.Label>
-        <Form.Control as="textarea" rows={3} />
+        <Form.Control as="textarea" name="formContent"  rows={3} />
       </Form.Group>
-          <Button variant="primary" type='submit' onClick={saveTopic} >
+          <Button variant="primary" type='submit' >
             Save Changes
         </Button>
     </Form>
