@@ -10,10 +10,8 @@ function TopicThread({ comments }) {
     const fetchComments = comments.map((comment,index) => {
         return (
             <div key={index}>
-            <p>{comment.title}</p>
-            {comment.comments && comment.comments.map((reply, replyIndex) => (
-              <p key={replyIndex} style={{ marginLeft: '20px' }}>{reply}</p>
-            ))}
+            <strong>{comment.title}</strong>
+            <p>{comment.text}</p>
           </div>
         );
     });

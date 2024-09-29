@@ -3,66 +3,18 @@
         "id": 1,
         "title_id": 1,
         "title": "Comment Thread",
-        "comments": [
-            {
-                "title": "My Title",
-                "content": "My Content",
-                "rating": 5
-            },
-            {
-                "title": "Accordion Item #1",
-                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-                "rating": 4.5
-            },
-            {
-                "title": "Accordion Item #2",
-                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-                "rating": 3.8
-            }
-        ]
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...FIRST ONE"
     },
     {
         "id": 2,
         "title_id": 2,
         "title": "Comment Thread",
-        "comments": [
-            {
-                "title": "My Title",
-                "content": "My Content",
-                "rating": 5
-            },
-            {
-                "title": "Accordion Item #1",
-                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-                "rating": 4.5
-            },
-            {
-                "title": "Accordion Item #2",
-                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-                "rating": 3.8
-            }
-        ]
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...SECOND ONE"
     },
     {
         "id": 3,
         "title_id": 3,
         "title": "Comment Thread",
-        "comments": [
-            {
-                "title": "My Title",
-                "content": "My Content",
-                "rating": 5
-            },
-            {
-                "title": "Accordion Item #1",
-                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-                "rating": 4.5
-            },
-            {
-                "title": "Accordion Item #2",
-                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-                "rating": 3.8
-            }
-        ]
+        "text": "Comment COmment Comment"
     }
 ]
