@@ -22,13 +22,13 @@ function TopicList() {
 
   const updateComments = (e) => {
     e.preventDefault();
-    console.log(e.target.formTitle.value)
-    console.log(e.target.formContent.value);
+    console.log(e.target.replySubject.value)
+    console.log(e.target.replyContent.value);
     const newComment = {
       "id": Date.now(),
-      "title_id": 1,
-      "title": e.target.formTitle.value,
-      "content": e.target.formContent.value,
+      "title_id": expanded,
+      "title": e.target.replySubject.value,
+      "content": e.target.replyContent.value,
       "rating": 0
     };
     setComments([...comments, newComment]);
@@ -71,12 +71,14 @@ function TopicList() {
                 </Badge>
               </Accordion.Header>
               <Accordion.Body>
-                {topic.content}
+                <div style={{ paddingBottom: '10px' }}>{topic.content}</div>
+                
               <TopicThread comments={commentData.filter(comment => comment.title_id === topic.id)} />
               {expanded === index && (
                 <div style={{ width: '100%' }}>
                   <Form onSubmit={updateComments}>
-                    <Form.Control as="textarea" rows={3} className="reply-form" style={{ width: '100%' }} onClick={(e) => e.stopPropagation()} />
+                  <Form.Control type="text" name="formTitle"  placeholder="Reply Title" controlId="replySubject" />
+                    <Form.Control as="textarea" rows={3} className="reply-form" style={{ width: '100%' }} onClick={(e) => e.stopPropagation()} controlId="replyContent" placeholder="Reply Content" />
                     <Button size="md" type="submit">Reply</Button>
                   </Form>
                 </div>
