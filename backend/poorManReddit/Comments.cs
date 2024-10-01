@@ -5,8 +5,8 @@ namespace poorManReddit;
 public class Comments
 {
     public int Id { get; set;}
-    public int Title_Id { get; set;}
-    public int Thread_Id {get; set;}
+    public int Title_id { get; set;}
+    public int Thread_id {get; set;}
     public string? Title { get; set;}
     public string? Content { get; set;}
     public int Rating { get; set;}
