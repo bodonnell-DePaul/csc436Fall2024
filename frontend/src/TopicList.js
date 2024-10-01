@@ -2,8 +2,8 @@ import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import TopicThread from './TopicThread';
-import topicData from './dummyData.json';
-import commentData from './commentData.json';
+// import topicData from './dummyData.json';
+// import commentData from './commentData.json';
 import './TopicList.css';
 import Badge from 'react-bootstrap/Badge';
 import { useState, useEffect } from 'react';
@@ -11,10 +11,14 @@ import TopicCreator from './TopicCreator';
 import { Form, FormGroup } from 'react-bootstrap';
 
 
-
+const hostname = 'http://127.0.0.1:5070'
+const topicData = [];
+const commentData = [];
 function TopicList() {
 
-
+  const [comments, setComments ] = useState(commentData)
+  const [topics, setTopics ] = useState(topicData)
+  const [expanded, setExpanded] = useState(null);
 //Both of these work interchangably
   function anotherTopic(newTopic){
     setTopics([...topics, newTopic])
@@ -53,22 +57,29 @@ function TopicList() {
     ));
 };
 
-  const [comments, setComments ] = useState(commentData)
-  const [topics, setTopics ] = useState(topicData)
-  const [expanded, setExpanded] = useState(null);
+
 
   useEffect(() => {
+
+  }, [])
+  useEffect(() => {
+    fetch(hostname+'/getTopics')
+    .then(response => response.json())
+    .then(data => {
+      setTopics(data)
+    });
     console.log(topics)
   }, [topics]);
 
   useEffect(() => {
     console.log(comments)
-    
   }, [comments]);
 
   const handleAccordionToggle = (index) => {
     setExpanded(expanded === index ? null : index);
   };
+
+
 
   return (
     <div>

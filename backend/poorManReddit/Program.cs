@@ -1,3 +1,6 @@
+using System.Text.Json;
+using poorManReddit;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -35,6 +38,38 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+app.MapGet("/getTopics", () =>
+{
+    var options = new JsonSerializerOptions
+    {
+        PropertyNameCaseInsensitive = true
+    };
+    using (StreamReader r = new StreamReader("dummyData.json"))  
+    {  
+        string? json = r.ReadToEnd();  
+        List<Topic>? source = JsonSerializer.Deserialize<List<Topic>>(json, options); 
+        return source;
+    }  
+}).WithOpenApi().WithName("Get Topics");
+
+app.MapGet("/getComments", () => {
+var options = new JsonSerializerOptions
+    {
+        PropertyNameCaseInsensitive = true
+    };
+    using (StreamReader r = new StreamReader("commentData.json"))  
+    {  
+        string? json = r.ReadToEnd();  
+        List<Comments>? source = JsonSerializer.Deserialize<List<Comments>>(json, options); 
+        return source;
+    }  
+}).WithOpenApi().WithName("Get Comments");
+app.MapGet("/hellWorld", () =>
+{
+
+    return "Hello World from my API";
+}).WithOpenApi().WithName("Hello World");
 
 app.Run();
 
