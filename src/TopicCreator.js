@@ -47,7 +47,7 @@ function TopicCreator({ addTopic }) {
               <Form.Label>Topic Content</Form.Label>
               <Form.Control as="textarea" name="formContent"  rows={3} />
             </Form.Group>
-                <Button variant="primary" type='submit' >
+              <Button variant="primary" type='submit' >
                   Save Changes
               </Button>
           </Form>
