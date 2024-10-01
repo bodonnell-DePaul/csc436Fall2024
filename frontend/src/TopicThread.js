@@ -2,20 +2,12 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { useState, useEffect } from 'react';
-// const updateRating = (id, delta) => {
-//     setTopics(comments.map(comment => 
-//       comment.id === id ? { ...comment, rating: comment.rating + delta } : comment
-//     ));
-// };
+
 function TopicThread({comments, updateCommentRating}){
 
     function updateRating(id,delta){
         updateCommentRating(id,delta);
     };
-
-    useEffect(() => {
-        console.log(comments)
-    }, [comments]);
 
     const matchedComments = comments.map((chat, index) => {
         return(

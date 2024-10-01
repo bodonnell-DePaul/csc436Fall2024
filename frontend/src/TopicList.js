@@ -36,6 +36,7 @@ function TopicList() {
       "rating": 0
     };
     setComments([...comments, newComment]);
+    
     e.target.replySubject.value = "";
     e.target.replyContent.value = "";
   };
@@ -62,6 +63,7 @@ function TopicList() {
 
   useEffect(() => {
     console.log(comments)
+    
   }, [comments]);
 
   const handleAccordionToggle = (index) => {
