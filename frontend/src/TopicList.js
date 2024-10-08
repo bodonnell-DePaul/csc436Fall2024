@@ -35,7 +35,7 @@ function TopicList() {
     console.log(e.target.replyContent.value);
     const newComment = {
       id: Date.now(),
-      title_id: expanded + 1,
+      title_id: expanded,
       title: e.target.replySubject.value,
       content: e.target.replyContent.value,
       rating: 0
@@ -113,7 +113,7 @@ function TopicList() {
         {topics.map((topic, index) => (
           <Accordion.Item eventKey={index.toString()} key={index}>
             {/* Accordion header with topic title and comment count */}
-            <Accordion.Header onClick={() => handleAccordionToggle(index)}>
+            <Accordion.Header onClick={() => handleAccordionToggle(topic.id)}>
               {topic.title}
               <Badge bg="primary" pill>
                 {/* Display the number of comments for the topic */}
@@ -140,7 +140,7 @@ function TopicList() {
               />
               
               {/* Form to add a new comment, displayed only if the accordion item is expanded */}
-              {expanded === index && (
+              {expanded === topic.id && (
                 <div style={{ width: '100%' }}>
                   <Form onSubmit={updateComments}>
                     <FormGroup controlId="replySubject">

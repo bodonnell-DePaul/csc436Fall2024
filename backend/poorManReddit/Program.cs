@@ -11,6 +11,7 @@ builder.Services.AddSwaggerGen();
 // Configure CORS to allow requests from specific origins
 // Add Services: Add services to the container, including Swagger (just above on line 9) for API documentation and CORS for cross-origin requests.
 // CORS Configuration: Configure CORS to allow requests from http://127.0.0.1 with any header and method.
+
 builder.Services.AddCors(options => 
 {
     options.AddPolicy("AllowAllOrigins",
