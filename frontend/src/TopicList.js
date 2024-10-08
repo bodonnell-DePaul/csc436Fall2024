@@ -34,8 +34,8 @@ function TopicList() {
     console.log(e.target.replySubject.value);
     console.log(e.target.replyContent.value);
     const newComment = {
-      id: Date.now(),
-      title_id: expanded,
+      comment_id: Date.now(),
+      topic_id: expanded,
       title: e.target.replySubject.value,
       content: e.target.replyContent.value,
       rating: 0
@@ -50,14 +50,14 @@ function TopicList() {
   // Function to update the rating of a topic
   const updateTitleRating = (id, delta) => {
     setTopics(topics.map(topic =>
-      topic.id === id ? { ...topic, rating: topic.rating + delta } : topic
+      topic.topic_id === id ? { ...topic, rating: topic.rating + delta } : topic
     ));
   };
 
   // Function to update the rating of a comment
   const updateCommentRating = (id, delta) => {
     setComments(comments.map(comment =>
-      comment.id === id ? { ...comment, rating: comment.rating + delta } : comment
+      comment.comment_id === id ? { ...comment, rating: comment.rating + delta } : comment
     ));
   };
 
@@ -113,11 +113,11 @@ function TopicList() {
         {topics.map((topic, index) => (
           <Accordion.Item eventKey={index.toString()} key={index}>
             {/* Accordion header with topic title and comment count */}
-            <Accordion.Header onClick={() => handleAccordionToggle(topic.id)}>
+            <Accordion.Header onClick={() => handleAccordionToggle(topic.topic_id)}>
               {topic.title}
               <Badge bg="primary" pill>
                 {/* Display the number of comments for the topic */}
-                {comments.filter(comment => comment.title_id === topic.id).length}
+                {comments.filter(comment => comment.topic_id === topic.topic_id).length}
               </Badge>
             </Accordion.Header>
             
@@ -135,12 +135,12 @@ function TopicList() {
                 and the rating buttons began working as expected
               */}
               <TopicThread 
-                comments={comments.filter(comment => comment.title_id === topic.id)} 
+                comments={comments.filter(comment => comment.topic_id === topic.topic_id)} 
                 updateCommentRating={updateCommentRating} 
               />
               
               {/* Form to add a new comment, displayed only if the accordion item is expanded */}
-              {expanded === topic.id && (
+              {expanded === topic.topic_id && (
                 <div style={{ width: '100%' }}>
                   <Form onSubmit={updateComments}>
                     <FormGroup controlId="replySubject">
@@ -160,8 +160,8 @@ function TopicList() {
               <div style={{ marginTop: '10px' }}>
                 <strong className="accordion-footer">Rating: {topic.rating}</strong>
                 <ButtonGroup size="sm" style={{ marginLeft: '10px', marginBottom: '20px' }}>
-                  <Button variant="success" onClick={() => updateTitleRating(topic.id, 1)}>+</Button>
-                  <Button variant="danger" onClick={() => updateTitleRating(topic.id, -1)}>-</Button>
+                  <Button variant="success" onClick={() => updateTitleRating(topic.topic_id, 1)}>+</Button>
+                  <Button variant="danger" onClick={() => updateTitleRating(topic.topic_id, -1)}>-</Button>
                 </ButtonGroup>
               </div>
             </div>

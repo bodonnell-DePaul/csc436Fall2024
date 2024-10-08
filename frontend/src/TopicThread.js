@@ -14,7 +14,7 @@ function TopicThread({ comments, updateCommentRating }) {
     const matchedComments = comments.map((chat, index) => {
         return (
             <ListGroup as="ul" key={index}>
-                <ListGroup.Item as="li" className="d-flex justify-content-between align-items-start" key={chat.id}>
+                <ListGroup.Item as="li" className="d-flex justify-content-between align-items-start" key={chat.comment_id}>
                     <div className="ms-2 me-auto">
                         {/* Display the title of the comment 
                         Describes the div that displays the title of the comment.
@@ -28,9 +28,9 @@ function TopicThread({ comments, updateCommentRating }) {
                         <strong className="accordion-footer">Rating: {chat.rating}
                             <ButtonGroup size="sm">
                                 {/* Button to increase the rating */}
-                                <Button variant="success" onClick={() => updateRating(chat.id, 1)}>+</Button>
+                                <Button variant="success" onClick={() => updateRating(chat.comment_id, 1)}>+</Button>
                                 {/* Button to decrease the rating */}
-                                <Button variant="danger" onClick={() => updateRating(chat.id, -1)}>-</Button>
+                                <Button variant="danger" onClick={() => updateRating(chat.comment_id, -1)}>-</Button>
                             </ButtonGroup>
                         </strong>
                     </div>

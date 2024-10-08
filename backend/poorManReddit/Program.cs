@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using poorManReddit;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,26 +43,47 @@ app.UseHttpsRedirection();
 // We are now using this policy to enable CORS in the application.
 app.UseCors("AllowAllOrigins");
 
-// Sample weather forecast data
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
 // Define an endpoint to get weather forecast data
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/Reset", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    using(DbContext reddit = new redditContext())
+    {
+        reddit.Database.EnsureDeleted();
+        reddit.Database.EnsureCreated();
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+        using (StreamReader r = new StreamReader("dummyData.json"))  
+        {  
+            string? json = r.ReadToEnd();  
+            List<Topic>? source = JsonSerializer.Deserialize<List<Topic>>(json, options); 
+            foreach(var item in source)
+            {
+                reddit.Add<Topic>(item);  
+            }
+            
+        }  
+        reddit.SaveChanges();
+
+        using (StreamReader r = new StreamReader("commentData.json"))  
+        {  
+            string? json = r.ReadToEnd();  
+            List<Comments>? source = JsonSerializer.Deserialize<List<Comments>>(json, options); 
+            foreach(var item in source)
+            {
+                reddit.Add<Comments>(item);  
+            }
+
+        }  
+        reddit.SaveChanges();
+        reddit.Database.ExecuteSqlRaw("PRAGMA wal_checkpoint;");
+        
+    }
+
 })
-.WithName("GetWeatherForecast")
+.WithName("Reset Data")
 .WithOpenApi();
 
 // Define an endpoint to get topics from a JSON file
@@ -71,24 +93,24 @@ app.MapGet("/getTopics", () =>
     {
         PropertyNameCaseInsensitive = true
     };
-    using (StreamReader r = new StreamReader("dummyData.json"))  
+    //using (StreamReader r = new StreamReader("dummyData.json"))  
+    using(redditContext reddit = new redditContext())
     {  
-        string? json = r.ReadToEnd();  
-        List<Topic>? source = JsonSerializer.Deserialize<List<Topic>>(json, options); 
+        List<Topic>? source = reddit.Topics.OrderBy(t => t.Topic_id).ToList();//JsonSerializer.Deserialize<List<Topic>>(json, options); 
         return source;
     }  
 }).WithOpenApi().WithName("Get Topics");
 
 // Define an endpoint to get comments from a JSON file
 app.MapGet("/getComments", () => {
-var options = new JsonSerializerOptions
+    var options = new JsonSerializerOptions
     {
         PropertyNameCaseInsensitive = true
     };
-    using (StreamReader r = new StreamReader("commentData.json"))  
+    using(redditContext reddit = new redditContext())//using (StreamReader r = new StreamReader("commentData.json"))  
     {  
-        string? json = r.ReadToEnd();  
-        List<Comments>? source = JsonSerializer.Deserialize<List<Comments>>(json, options); 
+        
+        List<Comments>? source = reddit.Comments.OrderBy(t => t.Comment_id).ToList();
         return source;
     }  
 }).WithOpenApi().WithName("Get Comments");
