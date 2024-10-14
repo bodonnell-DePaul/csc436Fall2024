@@ -21,11 +21,31 @@ function TopicList() {
   // Function to add a new topic
   function anotherTopic(newTopic) {
     setTopics([...topics, newTopic]);
+    postTopic(newTopic);
   }
 
   // Alternative function to add a new topic
   const addTopic = (newTopic) => {
-    setTopics([...topics, newTopic]);
+    
+    postTopic(newTopic);
+  };
+
+  async function postTopic(topic) {
+    try {
+      console.log('Posting topic:', topic);
+      console.log('JSON: ', JSON.stringify(topic));
+      const response = await fetch(hostname + '/addTopic', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(topic)
+      });
+      const data = await response.json();
+      setTopics([...topics, data]);
+    } catch (error) {
+      console.error('Error posting topics:', error);
+    }
   };
 
   // Function to handle comment submission

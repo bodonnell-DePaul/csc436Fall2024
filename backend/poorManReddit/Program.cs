@@ -121,6 +121,46 @@ app.MapGet("/hellWorld", () =>
     return "Hello World from my API";
 }).WithOpenApi().WithName("Hello World");
 
+app.MapPost("/addTopic", (Topic topic) =>
+{
+    using(redditContext reddit = new redditContext())
+    {
+        reddit.Add<Topic>(topic);
+        reddit.SaveChanges();
+        return topic;
+    }
+}).WithOpenApi().WithName("Add Topic");
+
+app.MapPost("/addComment", (Comments comment) =>
+{
+    using(redditContext reddit = new redditContext())
+    {
+        reddit.Add<Comments>(comment);
+        reddit.SaveChanges();
+        return comment;
+    }
+}).WithOpenApi().WithName("Add Comment");
+
+app.MapPut("/updateTopic", (Topic topic) =>
+{
+    using(redditContext reddit = new redditContext())
+    {
+        reddit.Update<Topic>(topic);
+        reddit.SaveChanges();
+        return topic;
+    }
+}).WithOpenApi().WithName("Update Topic");
+
+app.MapPut("/updateComment", (Comments comment) =>
+{
+    using(redditContext reddit = new redditContext())
+    {
+        reddit.Update<Comments>(comment);
+        reddit.SaveChanges();
+        return comment;
+    }
+}).WithOpenApi().WithName("Update Comment");
+
 // Run the application
 app.Run();
 
