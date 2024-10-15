@@ -20,7 +20,6 @@ function TopicList() {
 
   // Function to add a new topic
   function anotherTopic(newTopic) {
-    setTopics([...topics, newTopic]);
     postTopic(newTopic);
   }
 
@@ -49,36 +48,83 @@ function TopicList() {
   };
 
   // Function to handle comment submission
-  const updateComments = (e) => {
+  const newComments = (e) => {
     e.preventDefault();
     console.log(e.target.replySubject.value);
     console.log(e.target.replyContent.value);
     const newComment = {
-      comment_id: Date.now(),
+      id: -1,
+      comment_id: -1,
       topic_id: expanded,
       title: e.target.replySubject.value,
       content: e.target.replyContent.value,
       rating: 0
     };
-    setComments([...comments, newComment]);
-
+    fetch(hostname + '/addComment',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newComment)})
+    .then(response => response.json())
+    .then(data => {
+      setComments([...comments, data]);
+    });
     // Clear the form fields
     e.target.replySubject.value = "";
     e.target.replyContent.value = "";
   };
 
   // Function to update the rating of a topic
-  const updateTitleRating = (id, delta) => {
-    setTopics(topics.map(topic =>
-      topic.topic_id === id ? { ...topic, rating: topic.rating + delta } : topic
-    ));
+  const updateTitleRating = (id,topic_id, currentRating, delta) => {
+    const updatedTopic = {
+      "id" : id,
+      "topic_id": topic_id,
+      "title": '',
+      "content": '',
+      "rating": currentRating + delta
+  };
+    fetch(hostname + '/updateTopic',{
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedTopic)})
+    .then(response => response.json())
+    .then(data => {
+      setTopics(topics.map(data =>
+        data.topic_id === topic_id ? { ...data, rating: data.rating + delta } : data
+      ));
+    });
+    
   };
 
   // Function to update the rating of a comment
-  const updateCommentRating = (id, delta) => {
-    setComments(comments.map(comment =>
-      comment.comment_id === id ? { ...comment, rating: comment.rating + delta } : comment
-    ));
+  const updateCommentRating = (id,comment_id,current_rating, delta) => {
+    const updatedComment = {
+      id: id,
+      comment_id: comment_id,
+      topic_id: -1,
+      thread_id: -1,
+      title: '',
+      content: '',
+      rating: current_rating+delta
+    };
+    fetch(hostname + '/updateComment',{
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedComment)})
+    .then(response => response.json())
+    .then(data => {
+      setComments(comments.map(data =>
+        data.comment_id === comment_id ? { ...data, rating: data.rating + delta } : data
+      ));
+      
+    });
+
+
   };
 
   async function fetchComments() {
@@ -162,7 +208,7 @@ function TopicList() {
               {/* Form to add a new comment, displayed only if the accordion item is expanded */}
               {expanded === topic.topic_id && (
                 <div style={{ width: '100%' }}>
-                  <Form onSubmit={updateComments}>
+                  <Form onSubmit={newComments}>
                     <FormGroup controlId="replySubject">
                       <Form.Control type="text" name="formTitle" placeholder="Reply Title" />
                     </FormGroup>
@@ -180,8 +226,8 @@ function TopicList() {
               <div style={{ marginTop: '10px' }}>
                 <strong className="accordion-footer">Rating: {topic.rating}</strong>
                 <ButtonGroup size="sm" style={{ marginLeft: '10px', marginBottom: '20px' }}>
-                  <Button variant="success" onClick={() => updateTitleRating(topic.topic_id, 1)}>+</Button>
-                  <Button variant="danger" onClick={() => updateTitleRating(topic.topic_id, -1)}>-</Button>
+                  <Button variant="success" onClick={() => updateTitleRating(topic.id,topic.topic_id, topic.rating, 1)}>+</Button>
+                  <Button variant="danger" onClick={() => updateTitleRating(topic.id, topic.topic_id, topic.rating,-1)}>-</Button>
                 </ButtonGroup>
               </div>
             </div>

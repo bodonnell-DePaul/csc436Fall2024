@@ -1,5 +1,5 @@
 @poorManReddit_HostAddress = http://localhost:5070
 
-###
-GET {{poorManReddit_HostAddress}}/weatherforecast/
+POST {{poorManReddit_HostAddress}}/addTopic/
 Accept: application/json
+Body: {"id":7,"topic_id":1728947842828,"title":"a new topic","content":"hooray","rating":0}

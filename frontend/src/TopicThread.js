@@ -5,8 +5,8 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 function TopicThread({ comments, updateCommentRating }) {
     // Function to update the rating of a comment
     // Describes the updateRating function which calls updateCommentRating with the comment ID and the delta value.
-    function updateRating(id, delta) {
-        updateCommentRating(id, delta);
+    function updateRating(id,comment_id,current_rating, delta) {
+        updateCommentRating(id,comment_id,current_rating, delta);
     };
 
     // Map through the comments array and create a list item for each comment
@@ -28,9 +28,9 @@ function TopicThread({ comments, updateCommentRating }) {
                         <strong className="accordion-footer">Rating: {chat.rating}
                             <ButtonGroup size="sm">
                                 {/* Button to increase the rating */}
-                                <Button variant="success" onClick={() => updateRating(chat.comment_id, 1)}>+</Button>
+                                <Button variant="success" onClick={() => updateRating(chat.id, chat.comment_id,chat.rating, 1)}>+</Button>
                                 {/* Button to decrease the rating */}
-                                <Button variant="danger" onClick={() => updateRating(chat.comment_id, -1)}>-</Button>
+                                <Button variant="danger" onClick={() => updateRating(chat.id, chat.comment_id,chat.rating, -1)}>-</Button>
                             </ButtonGroup>
                         </strong>
                     </div>

@@ -96,7 +96,7 @@ app.MapGet("/getTopics", () =>
     //using (StreamReader r = new StreamReader("dummyData.json"))  
     using(redditContext reddit = new redditContext())
     {  
-        List<Topic>? source = reddit.Topics.OrderBy(t => t.Topic_id).ToList();//JsonSerializer.Deserialize<List<Topic>>(json, options); 
+        List<Topic>? source = reddit.Topics.ToList();//OrderBy(t => t.Id).ToList();//JsonSerializer.Deserialize<List<Topic>>(json, options); 
         return source;
     }  
 }).WithOpenApi().WithName("Get Topics");
@@ -145,8 +145,12 @@ app.MapPut("/updateTopic", (Topic topic) =>
 {
     using(redditContext reddit = new redditContext())
     {
-        reddit.Update<Topic>(topic);
-        reddit.SaveChanges();
+        Topic? update = reddit.Topics.Where(t => t.Topic_id == topic.Topic_id).FirstOrDefault();
+        if(update != null){
+            update.Rating = topic.Rating;
+            reddit.Update<Topic>(update);
+            reddit.SaveChanges();
+        }
         return topic;
     }
 }).WithOpenApi().WithName("Update Topic");
@@ -155,9 +159,14 @@ app.MapPut("/updateComment", (Comments comment) =>
 {
     using(redditContext reddit = new redditContext())
     {
-        reddit.Update<Comments>(comment);
-        reddit.SaveChanges();
-        return comment;
+        Comments? c = reddit.Comments.Where(t => t.Comment_id == comment.Comment_id).FirstOrDefault();
+        if(c != null)
+        {
+            c.Rating = comment.Rating;
+            reddit.Update<Comments>(c);
+            reddit.SaveChanges();
+        }
+        return c;
     }
 }).WithOpenApi().WithName("Update Comment");
 

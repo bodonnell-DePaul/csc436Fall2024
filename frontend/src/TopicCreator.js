@@ -18,8 +18,8 @@ function TopicCreator({ addTopic }) {
       console.log(e.target.formContent.value);
       
       const newTopic = {
-          "id" : 7,
-          "topic_id": Date.now(),//
+          "id" : -1,
+          "topic_id": -1,
           "title": e.target.formTitle.value,
           "content": e.target.formContent.value,
           "rating": 0
