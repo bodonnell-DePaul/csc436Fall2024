@@ -10,6 +10,12 @@ import { Form, FormGroup } from 'react-bootstrap';
 
 const hostname = 'http://127.0.0.1:5070'
 
+//Routes for Menu: https://github.com/bodonnell-DePaul/csc360_week3/blob/master/src/App.js
+//Nav specifics: https://github.com/bodonnell-DePaul/csc360_week3/blob/master/src/Navigation.js
+//Login page: https://github.com/bodonnell-DePaul/csc360_week3/blob/master/src/Login.js
+//Oauth: https://developers.google.com/identity/authentication
+
+
 function TopicList() {
   // State to store comments
   const [comments, setComments] = useState([]);

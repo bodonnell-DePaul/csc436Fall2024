@@ -7,7 +7,7 @@ namespace poorManReddit;
 
 public class UsersContext : DbContext
 {
-    DbSet<Users> users;
+    public DbSet<PrivateUsers> users {get;set;}
 
     public UsersContext(){
         

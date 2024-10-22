@@ -3,14 +3,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import TopicCreator from './TopicCreator';
 import TopicList from './TopicList';
-import NavHeader from './NavHeader';
+import App from './App';
 
 
 function ViewPort() {
     return (
       <Container>
         <Row>
-          <Col> <NavHeader/> </Col>
+          <Col> <App></App></Col>
         </Row>
         <Row>
           

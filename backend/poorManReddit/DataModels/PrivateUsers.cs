@@ -3,20 +3,22 @@ using System.Security.Cryptography;
 
 namespace poorManReddit.DataModels;
 
-public class Users
+public class PrivateUsers
 {
     public int Id { get; set;}
     public string Name { get; set;}
     public string Username{get; set;}
-    public string Password{get; set;}
     public string base64Creds {get; set;}
     public string hash {get;set;}
+    public string Password {get; set;}
+    
 
-    public Users(string username, string password)
+    public PrivateUsers(string username, string password)
     {
         this.Id = System.Security.Cryptography.RandomNumberGenerator.GetInt32(1000);
         this.Username = username;
-        this.Password = password;
+        this.Name = username;
+        
         this.base64Creds = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(username + ":" + password));
         var byteCredentials = Convert.FromBase64String(this.base64Creds);
         using (SHA256 sha256Hash = SHA256.Create())
@@ -29,6 +31,8 @@ public class Users
             }
             this.hash = builder.ToString();
         }
+        this.Password = this.hash;
     }
+
 
 }

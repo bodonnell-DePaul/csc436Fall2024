@@ -1,6 +1,11 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.OpenApi.Models;
+
 using poorManReddit;
+using poorManReddit.DataModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +31,37 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "basic",
+        In = ParameterLocation.Header,
+        Description = "Basic Authorization header using the Bearer scheme."
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "basic"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline for development environment
@@ -43,6 +79,36 @@ app.UseHttpsRedirection();
 // We are now using this policy to enable CORS in the application.
 app.UseCors("AllowAllOrigins");
 
+
+app.MapPost("/newUser", (PublicUsers user) => {
+    try{
+        using(UsersContext db = new UsersContext())
+        {
+            db.users.Add(user.GetPrivateUser());
+            db.SaveChanges();
+            db.Database.ExecuteSqlRaw("PRAGMA wal_checkpoint;");
+        }
+    }
+    catch(Exception e)
+    {
+        return Results.BadRequest(e.Message);
+    }
+    return Results.Ok("User created successfully");
+}).WithName("Create New User").WithOpenApi();
+
+app.MapPost("/login", (PublicUsers user) => {
+
+    using(var db = new UsersContext()){
+        var pu = db.users.FirstOrDefault(u => u.Username == user.userName);
+        if (pu != null){
+            return Results.Ok(pu);
+        }
+        else{
+            return Results.Unauthorized();
+        }
+    }
+
+}).WithName("Login User").WithOpenApi().RequireAuthorization(new AuthorizeAttribute() {AuthenticationSchemes="BasicAuthentication"});
 // Define an endpoint to get weather forecast data
 app.MapGet("/Reset", () =>
 {
