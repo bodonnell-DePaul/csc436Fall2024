@@ -10,7 +10,7 @@ function ViewPort() {
     return (
       <Container>
         <Row>
-          <Col> <App/></Col>
+          <Col><App/></Col>
         </Row>
       </Container>
     );
