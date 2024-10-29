@@ -10,7 +10,7 @@ function App() {
     <Router>
       <NavHeader />
       <Routes>
-        <Route exact path="/" element={<TopicList />}></Route>
+        <Route exact path="/" element={ <TopicList /> }></Route>
         <Route path="/login" element={<Login/>}></Route>
       </Routes>
     </Router>
