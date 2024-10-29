@@ -7,7 +7,7 @@ import ViewPort from './ViewPort';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ViewPort></ViewPort>
+    <ViewPort/>
   </React.StrictMode>
 );
 
