@@ -10,13 +10,8 @@ function ViewPort() {
     return (
       <Container>
         <Row>
-          <Col> <App></App></Col>
+          <Col> <App/></Col>
         </Row>
-        <Row>
-          
-          <Col sm={8}><TopicList/></Col>
-        </Row>
-
       </Container>
     );
   }
