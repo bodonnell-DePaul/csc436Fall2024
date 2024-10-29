@@ -3,7 +3,7 @@ import './Login.css';
 import {Form, Button, FormGroup} from "react-bootstrap";
 import Cookies from 'js-cookie';
 
-const hostname = 'http://127.0.0.1:5070'
+const hostname = 'https://poorman-reddit-backend-ejctamgefjf8aeaf.northcentralus-01.azurewebsites.net/';//'http://127.0.0.1:5070'
 function Authenticate(e)
 {
 
