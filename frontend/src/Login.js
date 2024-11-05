@@ -2,11 +2,14 @@ import logo from './hero.png';
 import './Login.css';
 import {Form, Button, FormGroup} from "react-bootstrap";
 import Cookies from 'js-cookie';
+import { useIsAuthenticated } from '@azure/msal-react';
+import { SignInButton } from './components/SignInButton';
+import { SignOutButton } from './components/SignOutButton';
 
 const hostname = 'https://poorman-reddit-backend-ejctamgefjf8aeaf.northcentralus-01.azurewebsites.net/';//'http://127.0.0.1:5070'
 function Authenticate(e)
 {
-
+    
     
     fetch(hostname+'/login',
         {
@@ -69,6 +72,7 @@ function NewUser(e){
 }
 
 function Login() {
+    const isAuthenticated = useIsAuthenticated();
   return (
     <div className="hero">
         <img src={logo} alt="Hero Image" />
@@ -104,6 +108,10 @@ function Login() {
                 </FormGroup>
                 <Button variant='primary' type="submit" className="w-100">Create User</Button>
             </Form>
+
+            <div >
+                    {isAuthenticated ? <SignOutButton /> : <SignInButton />}
+            </div>
         </div>
 
     </div>
