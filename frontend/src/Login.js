@@ -2,9 +2,10 @@ import logo from './hero.png';
 import './Login.css';
 import {Form, Button, FormGroup} from "react-bootstrap";
 import Cookies from 'js-cookie';
-import { useIsAuthenticated } from '@azure/msal-react';
+import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { SignInButton } from './components/SignInButton';
 import { SignOutButton } from './components/SignOutButton';
+import { useEffect } from 'react';
 
 const hostname = 'https://poorman-reddit-backend-ejctamgefjf8aeaf.northcentralus-01.azurewebsites.net/';//'http://127.0.0.1:5070'
 function Authenticate(e)
@@ -73,6 +74,18 @@ function NewUser(e){
 
 function Login() {
     const isAuthenticated = useIsAuthenticated();
+    const { instance } = useMsal();
+
+  useEffect(() => {
+    instance.handleRedirectPromise().then((response) => {
+      if (response) {
+        console.log('Authentication successful:', response);
+        // Update authentication state here if needed
+      }
+    }).catch((error) => {
+      console.error('Error handling redirect:', error);
+    });
+  }, [instance]);
   return (
     <div className="hero">
         <img src={logo} alt="Hero Image" />

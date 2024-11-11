@@ -1,8 +1,7 @@
 .accordion-footer{
-    margin-top: 10px;
-    padding-top: 10px;
+
     border-top: 1px solid #ddd;
-    font-size: 0.9em;
+    font-size: 0.7em;
     color: #555;
     display: flex;
     align-items: center;
@@ -35,4 +34,9 @@
   .reply-form {
     width: 100%;
     margin-bottom: 10px;
+  }
+
+  .small-button {
+    padding: 0.05rem 0.3rem; /* Adjust padding to make buttons smaller */
+    font-size: 0.8rem; /* Adjust font size if needed */
   }
