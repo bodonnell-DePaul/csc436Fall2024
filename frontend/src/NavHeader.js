@@ -20,8 +20,10 @@ function NavHeader() {
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
+              <NavDropdown.Item >
+                <Nav.Link eventKey="profile" as={Link} to="/profile">
+                  Profile
+                </Nav.Link>
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
               

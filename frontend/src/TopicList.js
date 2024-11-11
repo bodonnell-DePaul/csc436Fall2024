@@ -7,8 +7,10 @@ import Badge from 'react-bootstrap/Badge';
 import { useState, useEffect } from 'react';
 import TopicCreator from './TopicCreator';
 import { Form, FormGroup } from 'react-bootstrap';
+import { useIsAuthenticated } from '@azure/msal-react';
 
 const hostname = 'https://poorman-reddit-backend-ejctamgefjf8aeaf.northcentralus-01.azurewebsites.net/';//'http://127.0.0.1:5070'
+
 
 //Routes for Menu: https://github.com/bodonnell-DePaul/csc360_week3/blob/master/src/App.js
 //Nav specifics: https://github.com/bodonnell-DePaul/csc360_week3/blob/master/src/Navigation.js
@@ -17,6 +19,14 @@ const hostname = 'https://poorman-reddit-backend-ejctamgefjf8aeaf.northcentralus
 
 
 function TopicList() {
+
+  const isAuthenticated = useIsAuthenticated();
+
+  if (isAuthenticated) {
+    console.log('User is authenticated');
+  } else {
+    console.log('User is not authenticated');
+  }
   // State to store comments
   const [comments, setComments] = useState([]);
   // State to store topics
@@ -232,8 +242,8 @@ function TopicList() {
               <div style={{ marginTop: '10px' }}>
                 <strong className="accordion-footer">Rating: {topic.rating}</strong>
                 <ButtonGroup size="sm" style={{ marginLeft: '10px', marginBottom: '20px' }}>
-                  <Button variant="success" onClick={() => updateTitleRating(topic.id,topic.topic_id, topic.rating, 1)}>+</Button>
-                  <Button variant="danger" onClick={() => updateTitleRating(topic.id, topic.topic_id, topic.rating,-1)}>-</Button>
+                  <Button className="small-button" variant="success" onClick={() => updateTitleRating(topic.id,topic.topic_id, topic.rating, 1)}>+</Button>
+                  <Button className="small-button" variant="danger" onClick={() => updateTitleRating(topic.id, topic.topic_id, topic.rating,-1)}>-</Button>
                 </ButtonGroup>
               </div>
             </div>
