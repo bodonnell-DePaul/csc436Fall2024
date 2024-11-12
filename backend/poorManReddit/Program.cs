@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
-
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using poorManReddit;
 using poorManReddit.DataModels;
 
@@ -78,7 +80,68 @@ app.UseHttpsRedirection();
 // Above we defined a CORS policy named "AllowAllOrigins" that allows requests from http://127.0.0.1
 // We are now using this policy to enable CORS in the application.
 app.UseCors("AllowAllOrigins");
+var configuration = app.Configuration;
 
+async Task<IResult> GenerateSearchTag(Topic topic)
+{
+    string targetUri = "https://bod-aoai-eus2.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview";  
+    string apiKey = configuration["OpenAI_APIKey"];
+    using (var httpClient = new HttpClient())
+    {
+        //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+        httpClient.DefaultRequestHeaders.Add("api-key", apiKey);
+        var topicMaterial = new
+        {
+            title = topic.Title,
+            content = topic.Content
+        };
+
+        string topicMaterialJson = JsonSerializer.Serialize(topicMaterial);
+        var payload = new
+        {
+            messages = new object[]
+            {
+                new {
+                    role = "system",
+                    content = new object[] {
+                        new {
+                            type = "text",
+                            text = "You are an AI assistant that generates 5 hashtags based on the JSON document you receive"
+                        }
+                    }
+                },
+                new {
+                    role = "user",
+                    content = new object[] {
+                        new {
+                            type = "text",
+                            text = topicMaterialJson
+                        }
+                    }
+                }
+            },
+            temperature = 0.7,
+            top_p = 0.95,
+            max_tokens = 800,
+            stream = false
+        };
+        
+
+        var jsonPayload = JsonSerializer.Serialize(payload);
+        var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+        var response = await httpClient.PostAsync(targetUri, content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var responseContent = await response.Content.ReadAsStringAsync();
+            return Results.Ok(responseContent);
+        }
+        else
+        {
+            return Results.StatusCode((int)response.StatusCode);
+        }
+    }
+}
 
 app.MapPost("/newUser", (PublicUsers user) => {
     try{
@@ -127,6 +190,17 @@ app.MapGet("/Reset", () =>
             List<Topic>? source = JsonSerializer.Deserialize<List<Topic>>(json, options); 
             foreach(var item in source)
             {
+                var searchTags = GenerateSearchTag(item);
+                string content = "";
+                // using (JsonDocument doc = JsonDocument.Parse(content))
+                // {
+                //     JsonElement root = doc.RootElement;
+                //     JsonElement choices = root.GetProperty("choices");
+                //     JsonElement firstChoice = choices[0];
+                //     JsonElement message = firstChoice.GetProperty("message");
+                //      content = message.GetProperty("content").GetString();
+                // }
+                item.Search_tag = content;
                 reddit.Add<Topic>(item);  
             }
             
@@ -235,6 +309,22 @@ app.MapPut("/updateComment", (Comments comment) =>
         return c;
     }
 }).WithOpenApi().WithName("Update Comment");
+
+app.MapPost("/search", (string search) =>
+{
+    using(redditContext reddit = new redditContext())
+    {
+        List<Topic>? topics = reddit.Topics.Where(t => t.Search_tag.Contains(search)).ToList();
+        //List<Comments>? comments = reddit.Comments.Where(c => c.Search_tag == search).ToList();
+        return new {topics};//, comments};
+    }
+}).WithOpenApi().WithName("Search Topics");
+
+app.MapPost("/generateSearchTag", async (Topic topic) =>
+{
+    return GenerateSearchTag(topic);
+}).WithOpenApi().WithName("Generate Search Tag");
+
 
 // Run the application
 app.Run();

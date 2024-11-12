@@ -11,7 +11,9 @@ public class Topic
     public string? Content {get;set;}
     public int Rating{get;set;}
 
-    public Topic(int id, int topic_id, string? title, string content, int rating)
+    public string? Search_tag {get;set;}
+
+    public Topic(int id, int topic_id, string? title, string content, int rating, string? search_tag)
     {
         if(id < 0){
             this.Id = Random.Shared.Next(1000, 9999);
@@ -35,6 +37,8 @@ public class Topic
         }
         
         this.Rating = rating;
+
+        this.Search_tag = search_tag;
 
     }
     

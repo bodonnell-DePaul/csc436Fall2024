@@ -1,3 +1,5 @@
 backend/poorManReddit/obj/
 backend/poorManReddit/bin/
 node_modules
+backend/poorManReddit/appsettings.json
+

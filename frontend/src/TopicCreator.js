@@ -66,7 +66,7 @@ function TopicCreator({ addTopic }) {
               </Form.Group>
               <Form.Group className="mb-3" controlId="formSearchTag">
                 <Form.Label>Search Tag</Form.Label>
-                <Form.Control type="text" name="formSearchBox"  placeholder="Enter a phrase that will be used for search" required />
+                <Form.Control type="text" id="formSearchBox"  placeholder="Enter a phrase that will be used for search" required />
                 <Form.Label>Or Generate One</Form.Label><br></br>
                 <Button variant="primary" type='button' onClick={generateTag} >
                     Generate Tag
