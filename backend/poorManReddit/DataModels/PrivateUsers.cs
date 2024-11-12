@@ -11,6 +11,7 @@ public class PrivateUsers
     public string base64Creds {get; set;}
     public string hash {get;set;}
     public string Password {get; set;}
+    public string Preferences {get; set;}
     
 
     public PrivateUsers(string username, string password)
@@ -32,6 +33,8 @@ public class PrivateUsers
             this.hash = builder.ToString();
         }
         this.Password = this.hash;
+
+        this.Preferences = "default";
     }
 
 
