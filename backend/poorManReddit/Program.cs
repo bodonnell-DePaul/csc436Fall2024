@@ -85,7 +85,7 @@ var configuration = app.Configuration;
 async Task<IResult> GenerateSearchTag(Topic topic)
 {
     string targetUri = "https://bod-aoai-eus2.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview";  
-    string apiKey = configuration["OpenAI_APIKey"];
+    string apiKey = configuration["OpenAI_APIKEY"];
     using (var httpClient = new HttpClient())
     {
         //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
@@ -190,7 +190,7 @@ app.MapGet("/Reset", () =>
             List<Topic>? source = JsonSerializer.Deserialize<List<Topic>>(json, options); 
             foreach(var item in source)
             {
-                var searchTags = GenerateSearchTag(item);
+                //var searchTags = GenerateSearchTag(item);
                 string content = "";
                 // using (JsonDocument doc = JsonDocument.Parse(content))
                 // {
@@ -322,7 +322,7 @@ app.MapPost("/search", (string search) =>
 
 app.MapPost("/generateSearchTag", async (Topic topic) =>
 {
-    return GenerateSearchTag(topic);
+    return await GenerateSearchTag(topic);
 }).WithOpenApi().WithName("Generate Search Tag");
 
 

@@ -9,7 +9,9 @@ import TopicCreator from './TopicCreator';
 import { Form, FormGroup } from 'react-bootstrap';
 import { useIsAuthenticated } from '@azure/msal-react';
 
-const hostname = 'https://poorman-reddit-backend-ejctamgefjf8aeaf.northcentralus-01.azurewebsites.net/';//'http://127.0.0.1:5070'
+//const hostname = process.env.REACT_APP_dev_hostname;//
+//const hostname ='https://poorman-reddit-backend-ejctamgefjf8aeaf.northcentralus-01.azurewebsites.net/';//
+const hostname = 'http://127.0.0.1:5070';
 
 
 //Routes for Menu: https://github.com/bodonnell-DePaul/csc360_week3/blob/master/src/App.js

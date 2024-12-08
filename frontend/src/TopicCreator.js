@@ -31,7 +31,7 @@ function TopicCreator({ addTopic }) {
     }
 
       // Function to execute when the Generate Tag button is clicked
-  function generateTag() {
+  async function generateTag() {
       const formTitle = document.getElementById('formTitle').value;
       const formContent = document.getElementById('formContent').value;
 
@@ -39,7 +39,31 @@ function TopicCreator({ addTopic }) {
         alert('Please fill out the Topic Subject and Topic Content fields before generating a tag.');
         return;
       }
-    
+      const commentForTags = {
+        id: -1,
+        comment_id: -1,
+        topic_id: -1,
+        title: formTitle,
+        content: formContent,
+        rating: 0,
+        search_tag: ''
+      };
+      //const hostname = process.env.REACT_APP_dev_hostname;
+      //const hostname ='https://poorman-reddit-backend-ejctamgefjf8aeaf.northcentralus-01.azurewebsites.net/';//
+      const hostname = 'http://127.0.0.1:5070';
+      try{
+        const response = await fetch(hostname + '/generateSearchTag', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(commentForTags)
+        });
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error('Error posting topics:', error);
+      }
       console.log('Generate Tag button clicked');
       // Add your logic here
     }
